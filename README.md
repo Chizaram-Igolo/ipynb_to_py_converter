@@ -6,9 +6,9 @@ A quick and dirty tool to convert Jupyter notebook files to Python files. Markdo
 ### To Use:
 -  Clone repository.
 -  Open Command Prompt and cd to folder.
--  Open extract_statements.py and change filepath from "test.ipynb" to the path of your file.
--  Run extract_statements.py from command prompt.
--  Look for your .py file at the file path you specified.
+-  Open main.py and change filepath from "files_to_convert/test.ipynb" to the path of your file.
+-  Run main.py from command prompt.
+-  Look for your .py file in /converted_files.
 
 
 ### TODO:

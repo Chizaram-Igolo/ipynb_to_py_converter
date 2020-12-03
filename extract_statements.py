@@ -1,29 +1,34 @@
-from delimit import check_fix_delimiters
+import re
 import json
 
-filepath = "test.ipynb"
+def load_code_blocks(filepath):
+    """ Extracts all the code blocks. Each .ipynb file has a JSON key called 
+        `cells` residing in the second dimension and containing another key 
+        called `source` which contains a list of lists of code."""
 
-# Build new file name string
-sourcefile = ''.join(filepath.split(".")[:-1]) + ".py"
+    sourcecode = []
+    
+    with open(filepath, "r") as f:
+        content = json.load(f)
 
-check_fix_delimiters(filepath)
-
-with open(filepath, "r") as f:
-    content = json.load(f)
-
-sourcecode = []
-
-for item in content[0]["cells"]:
-    sourcecode.append(item["source"])
+    for item in content[0]["cells"]:
+        sourcecode.append(item["source"])
+        
+    return sourcecode
 
 
-def write_source_file(filepath): 
+def write_source_file(filepath, sourcefile, sourcecode):
+    """Goes through each list and each part of the list if they are lists
+    themselves to get the source code."""
     
     with open(sourcefile, "w") as f:
         for line in sourcecode:
             if isinstance(line, list):
-                for l in line:
-                    print(l.rstrip('\r\n'), file=f)
+                for l in line: # remove markdown code block formating
+                    if l.startswith("```"):
+                        print("#", l.rstrip('\r\n'), file=f)
+                    else:
+                        print(l.rstrip('\r\n'), file=f)
             else:
                 print(line.rstrip('\r\n'), file=f)
 

@@ -30,5 +30,8 @@ def write_source_file(filepath, sourcefile, sourcecode):
                     else:
                         print(l.rstrip('\r\n'), file=f)
             else:
-                print(line.rstrip('\r\n'), file=f)
+                if line.startswith("```"):
+                    print("#", l.rstrip('\r\n'), file=f)
+                else:
+                    print(line.rstrip('\r\n'), file=f)
 
